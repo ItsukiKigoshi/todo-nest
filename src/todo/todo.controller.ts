@@ -1,25 +1,21 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './create-task.dto';
 
-@Controller('todo')
+@Controller('tasks')
 export class TodoController {
   constructor(private prisma: PrismaService) {}
 
-  @Get('list')
-  async getList() {
-    const result = await this.prisma.task.findMany();
-    return [...result];
-  }
-
-  @Get('list/active')
+  @Get('')
   async getActiveList() {
     const result = await this.prisma.task.findMany({
       where: {
@@ -31,7 +27,7 @@ export class TodoController {
 
   @Post('')
   async add(@Body() task: CreateTaskDto) {
-    const result = await this.prisma.task.create({
+    await this.prisma.task.create({
       data: task,
     });
     return {
@@ -39,12 +35,24 @@ export class TodoController {
     };
   }
 
-  @Post('done/:id')
+  @Patch(':id')
   async done(@Param('id', ParseIntPipe) id: number) {
     await this.prisma.task.updateMany({
       data: {
         is_done: true,
       },
+      where: {
+        id: id,
+      },
+    });
+    return {
+      status: 'OK',
+    };
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    await this.prisma.task.delete({
       where: {
         id: id,
       },
