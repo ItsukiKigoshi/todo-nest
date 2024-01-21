@@ -12,7 +12,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './create-task.dto';
 
 @Controller('tasks')
-export class TodoController {
+export class TaskController {
   constructor(private prisma: PrismaService) {}
 
   @Get('')
