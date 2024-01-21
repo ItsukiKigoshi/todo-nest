@@ -16,6 +16,12 @@ export class TaskController {
   constructor(private prisma: PrismaService) {}
 
   @Get('')
+  async getAll() {
+    const result = await this.prisma.task.findMany();
+    return [...result];
+  }
+
+  @Get('done')
   async getActiveList() {
     const result = await this.prisma.task.findMany({
       where: {
