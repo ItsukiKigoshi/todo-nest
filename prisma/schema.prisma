@@ -12,7 +12,7 @@ datasource db {
 
 model Task {
   id    Int     @id @default(autoincrement())
-  title String  @unique
+  title String
   due_on  DateTime? 
   is_done Boolean  @default(false)
 }
